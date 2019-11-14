@@ -12,21 +12,21 @@ module.exports = {
     },
     async store(req, res) {
         const { nome, email, login, password, estado, instrumento, estilo, cpf } = req.body;
-        // const { filename: image } = req.file;
+        const { filename: image } = req.file;
 
-        // // separando imagem em nome e extensão
-        // const [name] = image.split('.');
-        // const fileName = `${name}.jpg`;
+        // separando imagem em nome e extensão
+        const [name] = image.split('.');
+        const fileName = `${name}.jpg`;
 
-        // // redimensiona a imagem do post para aumento de perfomance
-        // await sharp(req.file.path)
-        //     .resize(500)
-        //     .jpeg({ quality: 70 })
-        //     .toFile(
-        //         path.resolve(req.file.destination, 'resized', fileName)
-        //     )
-        // // apaga a imagem original    
-        // fs.unlinkSync(req.file.path);
+        // redimensiona a imagem do post para aumento de perfomance
+        await sharp(req.file.path)
+            .resize(500)
+            .jpeg({ quality: 70 })
+            .toFile(
+                path.resolve(req.file.destination, 'resized', fileName)
+            )
+        // apaga a imagem original    
+        fs.unlinkSync(req.file.path);
 
         const profile = await Profile.create({
             nome,
