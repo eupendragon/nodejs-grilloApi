@@ -1,28 +1,3 @@
-<<<<<<< HEAD
-{
-  "name": "backend",
-  "version": "1.0.0",
-  "main": "index.js",
-  "license": "MIT",
-  "scripts": {
-    "dev": "nodemon src/index.js"
-  },
-  "dependencies": {
-    "bcryptjs": "^2.4.3",
-    "body-parser": "^1.19.0",
-    "cors": "^2.8.5",
-    "express": "^4.17.1",
-    "mongoose": "^5.6.0",
-    "multer": "^1.4.1",
-    "sharp": "^0.22.1",
-    "socket.io": "^2.2.0"
-  },
-  "devDependencies": {
-    "morgan": "^1.9.1",
-    "nodemon": "^1.19.1"
-  }
-}
-=======
 {
   "name": "backend",
   "version": "1.0.0",
@@ -33,6 +8,8 @@
     "dev": "nodemon src/index.js"
   },
   "dependencies": {
+    "bcryptjs": "^2.4.3",
+    "body-parser": "^1.19.0",
     "cors": "^2.8.5",
     "crypto": "^1.0.1",
     "express": "^4.17.1",
@@ -46,4 +23,4 @@
     "nodemon": "^1.19.1"
   }
 }
->>>>>>> a8401e8e78b538174712bb806d7179d546386e5f
+
