@@ -3,6 +3,9 @@ const multer = require('multer')
 
 const uploadConfig = require('./config/upload')
 
+// Authenticate
+const authController = require ('./controllers/authController')
+
 //Profile
 const profileController = require('./controllers/profileController')
 
@@ -20,6 +23,8 @@ routes.post('/posts', upload.single('image'), postController.store)
 
 routes.get('/profiles', profileController.index)
 routes.post('/profiles', upload.single('image'), profileController.store)
+
+routes.post('/auth', authController.index)
 
 routes.post('/login', sessionController.login)
 
