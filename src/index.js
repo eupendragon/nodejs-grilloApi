@@ -1,9 +1,9 @@
-const express = require('express');
 const mongoose = require('mongoose'); // Importando biblioteca do mongoDB
 const path = require('path');
 const cors = require('cors');
 const morgan = require('morgan')
 
+const express = require('express');
 const app = express();
 
 const server = require('http').Server(app);
