@@ -20,7 +20,6 @@ routes.post('/posts', upload.single('image'), postController.store)
 
 routes.get('/profiles', profileController.index)
 routes.post('/profiles', upload.single('image'), profileController.store)
-routes.get('profile/image', profileController.image)
 
 routes.post('/login', sessionController.login)
 
