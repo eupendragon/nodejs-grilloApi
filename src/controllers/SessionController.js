@@ -4,8 +4,8 @@ module.exports = {
     async login(req, res) {
         try {
             const { login, password } = req.body
-            console.log(login)
-            console.log(password)
+            console.log("Login = " + login)
+            console.log("Senha = " + password)
 
             const profile = await Profile.findOne({ login: login })
                 .then(res => res)
@@ -22,8 +22,9 @@ module.exports = {
             }
 
             console.log(profile)
+            
         } catch (error) {
-            throw error
+            return res.status(400).send({error: 'Account not registred'})
         }
     }
 }

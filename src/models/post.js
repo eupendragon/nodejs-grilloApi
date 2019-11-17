@@ -6,13 +6,16 @@ const PostSchema = new mongoose.Schema({
     place: String,
     description: String,
     hashtags: String,
+    placeEvent: String,
     image: String,
-    likes:{
-        type: Number,
-        default: 0,
-    }
-},{
+    date: String,
+    user: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'Profile',
+        require: true,
+    },
+}, {
     timestamps: true,
 });
 
-module.exports = mongoose.model('Post',PostSchema);
+module.exports = mongoose.model('Post', PostSchema);

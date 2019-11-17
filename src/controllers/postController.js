@@ -10,8 +10,9 @@ module.exports = {
 
         return res.json(posts);
     },
+
     async store(req, res){
-        const {postTitle, author, place, description, hashtags } = req.body;
+        const {postTitle, author, place, date, placeEvent, description, hashtags } = req.body;
         const {filename: image} = req.file;
 
         // separando imagem em nome e extensão
@@ -34,8 +35,11 @@ module.exports = {
             place,
             description,
             hashtags,
+            date, 
+            placeEvent,
             image: fileName,
         });
+        
         // Socket IO = Compartilhar Informações em tempo real
         req.io.emit('post', post);
 
