@@ -2,6 +2,8 @@ const Profile = require('../models/profile');
 const sharp = require('sharp');
 const path = require('path');
 const fs = require('fs');
+
+// JWT CONFIG
 const jwt = require('jsonwebtoken')
 const authConfig = require('../config/auth')
 
