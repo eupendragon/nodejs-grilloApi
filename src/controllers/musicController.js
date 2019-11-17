@@ -2,8 +2,8 @@ const Music = require('../models/music')
 
 module.exports = {
     async index(req, res) {
-        const musics = await Music.find().sort({ 'createdAt': -1 });
-        return res.json(musics);
+        const musics = await Music.find().sort({ 'createdAt': -1 })
+        return res.json(musics)
     },
     async store(req, res) {
         try {
@@ -12,7 +12,7 @@ module.exports = {
             const music = await Music.create({
                 musicName,
             })
-            req.io.emit('music', music);
+            req.io.emit('music', music)
 
             return res.send({music})
 

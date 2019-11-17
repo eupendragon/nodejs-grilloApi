@@ -20,6 +20,8 @@ const musicController = require('./controllers/musicController')
 const routes = new express.Router()
 const upload = multer(uploadConfig)
 
+const authMiddleware = require('./middlewares/auth')
+
 routes.post('/auth', authController.index)
 
 routes.post('/login', sessionController.login)
@@ -30,7 +32,7 @@ routes.get('/profiles', profileController.index)
 routes.post('/posts', upload.single('image'), postController.store)
 routes.get('/posts', postController.index)
 
-routes.post('/music', musicController.store)
+routes.use(authMiddleware).post('/music', musicController.store)
 routes.get('/music', musicController.index)
 
 module.exports = routes
