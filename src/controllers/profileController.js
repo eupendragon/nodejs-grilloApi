@@ -10,23 +10,26 @@ module.exports = {
 
         return res.json(profiles);
     },
+    async image(req, res) {
+        try {
+            const profile = await Profile.findOne({ _id: req.query.id }).exec()
+            res.status(200).sendFile(profile.image)
+        } catch (error) {
+            res.status(404).json(error)
+        }
+    },
     async store(req, res) {
         const { nome, email, login, password, estado, instrumento, estilo, cpf } = req.body;
-        const { filename: image } = req.file;
-
-        // separando imagem em nome e extensão
-        const [name] = image.split('.');
-        const fileName = `${name}.jpg`;
+        const { filename: key } = req.file;
+        const url = path.resolve(req.file.destination, 'resized', key)
 
         // redimensiona a imagem do post para aumento de perfomance
         await sharp(req.file.path)
             .resize(500)
             .jpeg({ quality: 70 })
-            .toFile(
-                path.resolve(req.file.destination, 'resized', fileName)
-            )
+            .toFile(url)
         // apaga a imagem original    
-        fs.unlinkSync(req.file.path);
+        fs.unlinkSync(path.resolve(req.file.destination, 'key'));
 
         const profile = await Profile.create({
             nome,
@@ -37,7 +40,7 @@ module.exports = {
             instrumento,
             estilo,
             cpf,
-            // image: file,
+            image: url,
         });
 
         // Socket IO = Compartilhar Informações em tempo real

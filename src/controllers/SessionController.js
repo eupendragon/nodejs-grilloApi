@@ -16,9 +16,7 @@ module.exports = {
                     message: 'Não autorizado'
                 })
             } else {
-                res.status(202).json({
-                    message: 'Autorizado'
-                })
+                res.status(202).json(profile)
             }
 
             console.log(profile)
