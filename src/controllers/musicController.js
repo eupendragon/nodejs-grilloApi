@@ -10,6 +10,15 @@ module.exports = {
         }
     },
 
+    async list(req, res) {
+        try {
+            const music = await Music.findById(req.params.musicId).populate('user')
+            return res.send({ music })
+        } catch (err) {
+            return res.status(400).send({ error: 'Error List music' })
+        }
+    },
+
     async store(req, res) {
         try {
             const { musicName, image} = req.body
@@ -53,7 +62,6 @@ module.exports = {
             return res.send({music})
             
         } catch (err) {
-            console.log(err)
             return res.status(400).send({ error: 'Error update music' })
         }
     }
