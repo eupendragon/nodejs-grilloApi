@@ -1,4 +1,5 @@
 const Profile = require('../models/profile')
+
 const jwt = require('jsonwebtoken')
 const authConfig = require('../config/auth')
 
