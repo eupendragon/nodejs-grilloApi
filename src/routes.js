@@ -22,7 +22,7 @@ routes.post('/posts', upload.single('image'), postController.store);
 
 
 routes.get('/profiles', profileController.index);
-routes.get('profile/image', profileController.image)
+routes.get('/profile/image', profileController.image)
 routes.post('/profiles', upload.single('image'), profileController.store);
 
 routes.post('/login', sessionController.login)

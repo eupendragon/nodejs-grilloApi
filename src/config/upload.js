@@ -29,12 +29,16 @@ module.exports = {
         fileFilter: (req, file, cb) => {
             const allowedMimes = [
                 'image/jpeg',
-                'image/pjpeg'
-            ]
-            if (allowedMimes.includes(file.mimeType)) {
-                cb(null, true)
-            } else {
-                cb(new Error('Invalid file type'))
+                'image/pjpeg',
+                'image/png',
+                'image/gif'
+            ];
+    
+            if (allowedMimes.includes(file.mimetype)) {
+                cb(null, true);
+            }
+            else {
+                cb(new Error('Invalid file type'));
             }
         }
     })

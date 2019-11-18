@@ -12,24 +12,27 @@ module.exports = {
     },
     async image(req, res) {
         try {
-            const profile = await Profile.findOne({ _id: req.query.id }).exec()
-            res.status(200).sendFile(profile.image)
+            const profile = await Profile.findById(req.query.id).exec()
+            return res.status(200).sendFile(profile.image)
         } catch (error) {
-            res.status(404).json(error)
+            return res.status(404).json(error)
         }
     },
     async store(req, res) {
         const { nome, email, login, password, estado, instrumento, estilo, cpf } = req.body;
         const { filename: key } = req.file;
-        const url = path.resolve(req.file.destination, 'resized', key)
+
+        const inputFile = path.resolve(req.file.destination, key)
+        const url = path.resolve(req.file.destination, 'resized'+key)
+
+        console.log(key)
 
         // redimensiona a imagem do post para aumento de perfomance
-        await sharp(req.file.path)
+        await sharp(inputFile)
             .resize(500)
-            .jpeg({ quality: 70 })
             .toFile(url)
         // apaga a imagem original    
-        fs.unlinkSync(path.resolve(req.file.destination, 'key'));
+        fs.unlinkSync(inputFile);
 
         const profile = await Profile.create({
             nome,
