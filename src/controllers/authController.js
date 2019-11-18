@@ -10,7 +10,7 @@ function generateToken(params = {}) {
 }
 
 module.exports = {
-    async index(req, res, next) {
+    async index(req, res) {
         try{
             const {login, password} = req.body
             const user = await Profile.findOne({ login, password})
