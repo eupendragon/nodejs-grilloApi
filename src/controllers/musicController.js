@@ -41,7 +41,6 @@ module.exports = {
 
     async delete(req, res) {
         try {
-
             await Music.findByIdAndRemove(req.params.musicId)
 
             return res.status(200).send({message: 'Sucess delete'})
