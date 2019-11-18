@@ -1,11 +1,20 @@
-const Profile = require('../models/profile.js');
+const Profile = require('../models/profile');
 const sharp = require('sharp');
 const path = require('path');
 const fs = require('fs');
 
+// JWT CONFIG
+const jwt = require('jsonwebtoken')
+const authConfig = require('../config/auth')
+
+function generateToken(params = {}) {
+    return jwt.sign(params, authConfig.secret, {
+        expiresIn: 86400,
+    })
+}
+
 module.exports = {
     async index(req, res) {
-        // retorna os posts por data de criação
         const profiles = await Profile.find().sort({ 'createdAt': -1 });
 
         return res.json(profiles);
@@ -37,12 +46,15 @@ module.exports = {
             instrumento,
             estilo,
             cpf,
-            // image: file,
+            image: fileName,
         });
 
         // Socket IO = Compartilhar Informações em tempo real
         req.io.emit('profile', profile);
 
-        return res.json(profile);
+        return res.send({
+            profile,
+            token: generateToken({id: profile.id})
+        });
     }
-};
+};  
