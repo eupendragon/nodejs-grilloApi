@@ -14,6 +14,7 @@ const sessionController = require('./controllers/SessionController')
 
 // Post
 const postController = require('./controllers/postController')
+
 // Music
 const musicController = require('./controllers/musicController')
 
@@ -32,7 +33,7 @@ routes.get('/profiles', profileController.index)
 routes.post('/posts', upload.single('image'), postController.store)
 routes.get('/posts', postController.index)
 
-routes.use(authMiddleware).post('/music', musicController.store)
+routes.post(authMiddleware).post('/music', musicController.store)
 routes.get('/music', musicController.index)
 routes.get('/music/:musicId', musicController.list)
 routes.delete('/music/:musicId', musicController.delete)

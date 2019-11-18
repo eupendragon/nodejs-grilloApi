@@ -9,6 +9,15 @@ module.exports = {
             return res.status(400).send({ error: 'Error loading music' })
         }
     },
+    
+    async list(req, res) {
+        try {
+            const music = await Music.findById(req.params.musicId).populate('user')
+            return res.send({ music })
+        } catch (err) {
+            return res.status(400).send({ error: 'Error List music' })
+        }
+    },
 
     async store(req, res) {
         try {
