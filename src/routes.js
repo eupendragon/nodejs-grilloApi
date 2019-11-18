@@ -34,5 +34,7 @@ routes.get('/posts', postController.index)
 
 routes.use(authMiddleware).post('/music', musicController.store)
 routes.get('/music', musicController.index)
+routes.delete('/music/:musicId', musicController.delete)
+routes.put('/music/:musicId', musicController.update)
 
 module.exports = routes
