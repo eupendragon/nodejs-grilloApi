@@ -1,4 +1,4 @@
-const Post = require('../models/post.js');
+const Post = require('../models/post');
 const sharp = require('sharp');
 const path = require('path');
 const fs = require('fs');
@@ -12,7 +12,7 @@ module.exports = {
     },
 
     async store(req, res){
-        const {postTitle, author, place, date, placeEvent, description, hashtags } = req.body;
+        const {postTitle, author, place, date, placeEvent, description } = req.body;
         const {filename: image} = req.file;
 
         // separando imagem em nome e extensão
@@ -34,7 +34,6 @@ module.exports = {
             author,
             place,
             description,
-            hashtags,
             date, 
             placeEvent,
             image: fileName,
@@ -45,4 +44,4 @@ module.exports = {
 
         return res.json(post);
     }
-};
+}

@@ -1,27 +1,38 @@
-const express = require('express');
-const multer = require('multer');
+const express = require('express')
+const multer = require('multer')
 
-const uploadConfig = require('./config/upload');
+const uploadConfig = require('./config/upload')
+
+// Authenticate
+const authController = require ('./controllers/authController')
 
 //Profile
-const profileController = require('./controllers/profileController');
+const profileController = require('./controllers/profileController')
 
 // Login
 const sessionController = require('./controllers/SessionController')
 
 // Post
-const postController = require('./controllers/postController');
+const postController = require('./controllers/postController')
+// Music
+const musicController = require('./controllers/musicController')
 
-const routes = new express.Router();
-const upload = multer(uploadConfig);
+const routes = new express.Router()
+const upload = multer(uploadConfig)
 
-routes.get('/posts', postController.index);
-routes.post('/posts', upload.single('image'), postController.store);
+const authMiddleware = require('./middlewares/auth')
 
-
-routes.get('/profiles', profileController.index);
-routes.post('/profiles', upload.single('image'), profileController.store);
+routes.post('/auth', authController.index)
 
 routes.post('/login', sessionController.login)
 
-module.exports = routes;
+routes.post('/profiles', upload.single('image'), profileController.store)
+routes.get('/profiles', profileController.index)
+
+routes.post('/posts', upload.single('image'), postController.store)
+routes.get('/posts', postController.index)
+
+routes.use(authMiddleware).post('/music', musicController.store)
+routes.get('/music', musicController.index)
+
+module.exports = routes
