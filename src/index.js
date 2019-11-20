@@ -33,6 +33,21 @@ app.use(express.urlencoded({
     extended: true
 }))
 
+io.on('connection', socket => {
+    socket.on('subscribe', room => {
+        console.log('joining room ', room)
+        socket.join(room)
+    })
+
+    socket.on('send message', data => {
+        console.log('sending room post', data.room)
+        console.log(data.message)
+        socket.broadcast.to(data.room).emit('conversation private post', {
+            message: data.message
+        })
+    })
+})
+
 server.listen(3333);
 
 console.log("server running");
