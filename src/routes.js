@@ -36,7 +36,11 @@ routes.get('/posts/:postId', postController.list)
 routes.delete('/posts/:postId', postController.delete)
 routes.put('/posts/:postId', postController.update)
 
-routes.use(authMiddleware).post('/music', musicController.store)
+routes.use(authMiddleware).post('/music', upload.fields([
+    {name: 'image'},
+    {name: 'audio'}
+]), musicController.store)
+
 routes.get('/music', musicController.index)
 routes.get('/music/:musicId', musicController.list)
 routes.delete('/music/:musicId', musicController.delete)

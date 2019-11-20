@@ -21,9 +21,8 @@ module.exports = {
     },
 
     async store(req, res){
-        const {postTitle, author, place, date, placeEvent, description } = req.body;
+        const {postTitle, date, placeEvent, description } = req.body;
         const {filename: image} = req.file;
-
         // separando imagem em nome e extensão
         const [name] = image.split('.');
         const fileName = `${name}.jpg`;
@@ -40,8 +39,6 @@ module.exports = {
 
         const post = await Post.create({
             postTitle,
-            author,
-            place,
             description,
             date, 
             placeEvent,
