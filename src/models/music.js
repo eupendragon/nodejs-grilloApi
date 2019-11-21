@@ -3,6 +3,7 @@ const mongoose = require('mongoose')
 const MusicSchema = new mongoose.Schema({
     musicName: String,
     image: String,
+    audio: String,
     user: {
         type: mongoose.Schema.Types.ObjectId,
         ref: 'Profile',

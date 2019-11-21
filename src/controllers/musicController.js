@@ -1,15 +1,18 @@
 const Music = require('../models/music')
+const sharp = require('sharp');
+const path = require('path');
+const fs = require('fs');
 
 module.exports = {
     async index(req, res) {
         try {
             const musics = await Music.find().sort({ 'createdAt': -1 }).populate('user')
-            return res.send({ musics })
+            return res.json(musics)
         } catch (err) {
             return res.status(400).send({ error: 'Error loading music' })
         }
     },
-    
+
     async list(req, res) {
         try {
             const music = await Music.findById(req.params.musicId).populate('user')
@@ -20,31 +23,48 @@ module.exports = {
     },
 
     async store(req, res) {
+        console.log("rota acessada")
         try {
-            const { musicName, image} = req.body
+            const { musicName } = req.body
+
+            const audio = req.files.audio[0].filename
+            const image = req.files.image[0].filename
+
+            const [name] = image.split('.');
+            const imageName = `${name}.jpg`;
+            await sharp(req.files.image[0].path)
+                .resize(500)
+                .jpeg({ quality: 70 })
+                .toFile(
+                    path.resolve(req.files.image[0].destination, 'resized', imageName)
+                )
+            fs.unlinkSync(req.files.image[0].path)
+            // =================================================================================================
+            // MUSICA
+            const [audionam] = audio.split('.')
+            const audioName = `${audionam}.mp3`
+            path.resolve(req.files.audio[0].destination, audioName)
 
             const music = await Music.create({
                 musicName,
-                image,
+                image: imageName,
+                audio: audioName,
                 user: req.userId
             })
-
             req.io.emit('music', music)
-
             return res.json(music)
-
         } catch (error) {
+            console.log(error)
             return res.status(400).send({ error: 'Error creating music' })
         }
-
     },
 
     async delete(req, res) {
         try {
             await Music.findByIdAndRemove(req.params.musicId)
 
-            return res.status(200).send({message: 'Sucess delete'})
-            
+            return res.status(200).send({ message: 'Sucess delete' })
+
         } catch (err) {
             return res.status(400).send({ error: 'Error deleting music' })
         }
@@ -52,14 +72,14 @@ module.exports = {
 
     async update(req, res) {
         try {
-            const {musicName} = req.body
-            
-            const music = await Music.findByIdAndUpdate(req.params.musicId,{
-                musicName,
-            }, {new: true}).populate('user')
+            const { musicName } = req.body
 
-            return res.send({music})
-            
+            const music = await Music.findByIdAndUpdate(req.params.musicId, {
+                musicName,
+            }, { new: true }).populate('user')
+
+            return res.send({ music })
+
         } catch (err) {
             console.log(err)
             return res.status(400).send({ error: 'Error update music' })
