@@ -6,7 +6,7 @@ const fs = require('fs');
 module.exports = {
     async index(req, res) {
         try {
-            const musics = await Music.find().sort({ 'createdAt': -1 }).populate('user')
+            const musics = await Music.find({ user: req.query.userId }).sort({ 'createdAt': -1 }).populate('user')
             return res.json(musics)
         } catch (err) {
             return res.status(400).send({ error: 'Error loading music' })
