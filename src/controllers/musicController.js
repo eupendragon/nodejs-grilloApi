@@ -18,7 +18,7 @@ module.exports = {
         try {
             console.log("Acessando todas as Musicas")
             const musics = await Music.find().sort({ 'createdAt': -1 }).populate('user')
-            return res.json(musics)
+            return res.send(musics)
         } catch (err) {
             return res.status(400).send({ error: 'Error loading music' })
         }
