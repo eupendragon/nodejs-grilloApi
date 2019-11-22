@@ -7,6 +7,16 @@ module.exports = {
     async index(req, res) {
         try {
             console.log("Acessando Musicas")
+            const musics = await Music.find({ user: req.query.userId }).sort({ 'createdAt': -1 }).populate('user')
+            return res.json(musics)
+        } catch (err) {
+            return res.status(400).send({ error: 'Error loading music' })
+        }
+    },
+    
+    async allMusics(req, res) {
+        try {
+            console.log("Acessando todas as Musicas")
             const musics = await Music.find().sort({ 'createdAt': -1 }).populate('user')
             return res.json(musics)
         } catch (err) {
