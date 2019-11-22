@@ -23,7 +23,9 @@ app.use((req, res, next) => {
 
 app.use(cors());
 
+// ROTAS ALTERNATIVAS
 app.use('/files', express.static(path.resolve(__dirname, '..', 'uploads', 'resized')));
+app.use('/musics', express.static(path.resolve(__dirname, '..', 'uploads', 'musics')));
 
 app.use(require('./routes'));
 

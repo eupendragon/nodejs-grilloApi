@@ -6,7 +6,8 @@ const fs = require('fs');
 module.exports = {
     async index(req, res) {
         try {
-            const musics = await Music.find({ user: req.query.userId }).sort({ 'createdAt': -1 }).populate('user')
+            console.log("Acessando Musicas")
+            const musics = await Music.find().sort({ 'createdAt': -1 }).populate('user')
             return res.json(musics)
         } catch (err) {
             return res.status(400).send({ error: 'Error loading music' })
@@ -43,7 +44,16 @@ module.exports = {
             // MUSICA
             const [audionam] = audio.split('.')
             const audioName = `${audionam}.mp3`
-            path.resolve(req.files.audio[0].destination, audioName)
+            
+            fs.rename(`./uploads/${audioName}`, `./uploads/musics/${audioName}`, function(err){
+                if(err){
+                    console.log(err);
+                }
+                else{
+                    console.log("Arquivos movido")
+                }
+            })
+            path.resolve(req.files.audio[0].destination, 'musics', audioName)
 
             const music = await Music.create({
                 musicName,
@@ -51,6 +61,7 @@ module.exports = {
                 audio: audioName,
                 user: req.userId
             })
+
             req.io.emit('music', music)
             return res.json(music)
         } catch (error) {
