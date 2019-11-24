@@ -9,6 +9,10 @@ const ProfileSchema = new mongoose.Schema({
     instrumento: String,
     estilo: String,
     cpf: String,
+    descricao: {
+        type: String,
+        default: "Conte aos seus fâs um pouco sobre voce!"
+    },
     image: String,
 },{
     timestamps: true,

@@ -15,12 +15,13 @@ function generateToken(params = {}) {
 
 module.exports = {
     async index(req, res) {
+        console.log("Buscando musico...")
+        console.log("Descricao = "+ res.json(profiles.descricao))
         const profiles = await Profile.find().sort({ 'createdAt': -1 });
-
         return res.json(profiles);
     },
     async store(req, res) {
-        const { nome, email, login, password, estado, instrumento, estilo, cpf } = req.body;
+        const { nome, email, login, descricao, password, estado, instrumento, estilo, cpf } = req.body;
         const { filename: image } = req.file;
 
         // separando imagem em nome e extensão
@@ -46,6 +47,7 @@ module.exports = {
             instrumento,
             estilo,
             cpf,
+            descricao,
             image: fileName,
         });
 
