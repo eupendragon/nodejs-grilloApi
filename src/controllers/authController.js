@@ -16,7 +16,7 @@ module.exports = {
             const user = await Profile.findOne({ login, password})
 
             if(!user){
-                return res.status(400).send({error: 'User not Found'})
+                return res.status(404).send({error: 'User not Found'})
             }
 
             res.send({
@@ -26,7 +26,7 @@ module.exports = {
             // res.send({message: "User authenticated"})
         }
         catch (error) {
-            return res.status(400).send({error: 'Invalid token'})
+            return res.status(404).send({error: 'Invalid token'})
         }
     }
 }
