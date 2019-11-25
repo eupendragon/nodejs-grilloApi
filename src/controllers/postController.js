@@ -21,35 +21,41 @@ module.exports = {
     },
 
     async store(req, res){
-        const {postTitle, date, placeEvent, description } = req.body;
-        const {filename: image} = req.file;
-        // separando imagem em nome e extensão
-        const [name] = image.split('.');
-        const fileName = `${name}.jpg`;
-
-        // redimensiona a imagem do post para aumento de perfomance
-        await sharp(req.file.path)
-            .resize(500)
-            .jpeg({quality:70})
-            .toFile(
-                path.resolve(req.file.destination, 'resized', fileName)
-            )
-        // apaga a imagem original    
-        fs.unlinkSync(req.file.path); 
-
-        const post = await Post.create({
-            postTitle,
-            description,
-            date, 
-            placeEvent,
-            image: fileName,
-            user: req.userId
-        });
-        
-        // Socket IO = Compartilhar Informações em tempo real
-        req.io.emit('post', post);
-
-        return res.json(post);
+        try {
+            const {postTitle, date, placeEvent, description, participants } = req.body;
+            const {filename: image} = req.file;
+            // separando imagem em nome e extensão
+            const [name] = image.split('.');
+            const fileName = `${name}.jpg`;
+    
+            // redimensiona a imagem do post para aumento de perfomance
+            await sharp(req.file.path)
+                .resize(500)
+                .jpeg({quality:70})
+                .toFile(
+                    path.resolve(req.file.destination, 'resized', fileName)
+                )
+            // apaga a imagem original    
+            fs.unlinkSync(req.file.path); 
+    
+            const post = await Post.create({
+                postTitle,
+                description,
+                date, 
+                placeEvent,
+                image: fileName,
+                user: req.userId,
+                participants: req.userId,
+            });
+            
+            // Socket IO = Compartilhar Informações em tempo real
+            req.io.emit('post', post)
+    
+            return res.json(post)
+        } catch (err){
+            console.log(err)
+            return res.status(400).send({error: 'Failed create new Post'})
+        }
     },
 
     async delete(req, res) {
@@ -66,14 +72,20 @@ module.exports = {
 
     async update(req, res) {
         try {
-            const {postTitle, description, date, placeEvent} = req.body
+            const {participants} = req.body
             
             const post = await Post.findByIdAndUpdate(req.params.postId,{
                 postTitle,
-                description, 
-                date, 
-                placeEvent
+                description,
             }, {new: true}).populate('user')
+
+            await Promise.all(participants.map( async participants =>{
+                const eventParticipant = new Participant({ ...participants, post: _id})
+                await eventParticipant.save()
+                post.participants.push(eventParticipant)
+            }))
+
+            await post.save()
 
             return res.send({post})
             
