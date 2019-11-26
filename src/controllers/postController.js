@@ -104,5 +104,13 @@ module.exports = {
             console.log(error)
             return res.status(500).send(error)
         }
+    },
+
+    async indexUser(req, res) {
+        // retorna os posts por data de criação
+        const posts = await Post.find({ user: req.query.userId }).sort({ 'createdAt': -1 }).populate('user');
+        console.log(posts)
+
+        return res.json(posts);
     }
 }
