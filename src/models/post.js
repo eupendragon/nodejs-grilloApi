@@ -14,6 +14,7 @@ const PostSchema = new mongoose.Schema({
     participants: [{
         type: mongoose.Schema.Types.ObjectId,
         ref: 'Profile',
+        default: undefined
     }],
 }, {
     timestamps: true,

@@ -32,9 +32,10 @@ routes.get('/profiles', profileController.index)
 
 routes.use(authMiddleware).post('/posts', upload.single('image'), postController.store)
 routes.get('/posts', postController.index)
+routes.get('/events', postController.indexUser)
 routes.get('/posts/:postId', postController.list)
 routes.delete('/posts/:postId', postController.delete)
-routes.put('/posts/:postId', postController.update)
+routes.put('/post', postController.participate)
 
 routes.use(authMiddleware).post('/music', upload.fields([
     {name: 'image'},
