@@ -15,10 +15,14 @@ function generateToken(params = {}) {
 
 module.exports = {
     async index(req, res) {
-        console.log("Buscando musico...")
-        console.log("Descricao = "+ res.json(profiles.descricao))
-        const profiles = await Profile.find().sort({ 'createdAt': -1 });
-        return res.json(profiles);
+        try{
+            const profiles = await Profile.find({nome: req.query.nome}).sort({ 'createdAt': -1 });
+            console.log(req.query)
+            console.log(profiles)
+            return res.json(profiles);
+        }catch(err){
+            return res.status(400).send({error: 'Request error'})
+        }
     },
     async store(req, res) {
         const { nome, email, login, descricao, password, estado, instrumento, estilo, cpf } = req.body;
