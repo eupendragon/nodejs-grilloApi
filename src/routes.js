@@ -18,6 +18,9 @@ const postController = require('./controllers/postController')
 // Music
 const musicController = require('./controllers/musicController')
 
+// Chat
+const chatController = require('./controllers/chatController')
+
 const routes = new express.Router()
 const upload = multer(uploadConfig)
 
@@ -47,5 +50,10 @@ routes.get('/music/all', musicController.allMusics)
 routes.get('/music/:musicId', musicController.list)
 routes.delete('/music/:musicId', musicController.delete)
 routes.put('/music/:musicId', musicController.update)
+
+routes.post('/conversation', chatController.store)
+routes.get('/conversations', chatController.listChats)
+
+routes.get('/messages', chatController.listMessages)
 
 module.exports = routes
