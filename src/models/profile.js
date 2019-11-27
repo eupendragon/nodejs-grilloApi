@@ -16,7 +16,7 @@ const ProfileSchema = new mongoose.Schema({
     image: String,
     conversations: [{
         type: mongoose.Schema.Types.ObjectId,
-        ref: 'Profiles',
+        ref: 'Profile',
         default: undefined
     }]
 },{
