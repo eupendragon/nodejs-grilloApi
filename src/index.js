@@ -45,7 +45,8 @@ io.on('connection', socket => {
         console.log('sending room post', data.room)
         console.log(data.message)
         socket.broadcast.to(data.room).emit('conversation private post', {
-            message: data.message
+            message: data.message,
+            author: data.author
         })
     })
 })
