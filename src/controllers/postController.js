@@ -96,6 +96,11 @@ module.exports = {
             
             if (!post.participants.includes(userId)) {
                 post.participants.push(userId)
+                await post.save()
+
+                const Profile = require('../models/profile')
+                const profile = await Profile.findById(userId)
+                req.io.emit('participants', profile)
             }
 
             return res.status(200).send(post)
@@ -107,10 +112,14 @@ module.exports = {
     },
 
     async indexUser(req, res) {
-        // retorna os posts por data de criação
-        const posts = await Post.find({ user: req.query.userId }).sort({ 'createdAt': -1 }).populate('user');
-        console.log(posts)
+        try {
+            // retorna os posts por data de criação
+            const posts = await Post.find({ user: req.query.userId }).sort({ 'createdAt': -1 }).populate('participants');
+            console.log(posts)
 
-        return res.json(posts);
+            return res.json(posts);
+        } catch (error) {
+            return res.status(500).send(error)
+        }
     }
 }

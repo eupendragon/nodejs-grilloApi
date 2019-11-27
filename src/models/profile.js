@@ -14,6 +14,7 @@ const ProfileSchema = new mongoose.Schema({
         default: "Conte aos seus fâs um pouco sobre voce!"
     },
     image: String,
+    conversations: [String]
 },{
     timestamps: true,
 });
